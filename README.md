@@ -45,3 +45,6 @@ receiving name of the recipe, price of the recipe, nutritional information
 Special Techniques:
 barcode scanning
 getting a database tufts dining/hodgdon
+
+here's our wireframe:
+https://go.gliffy.com/go/share/image/sguu4i3ts18d87l9m1rj.png?utm_medium=live-embed&utm_source=custom
