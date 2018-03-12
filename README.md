@@ -48,3 +48,9 @@ getting a database tufts dining/hodgdon
 
 here's our wireframe:
 https://go.gliffy.com/go/share/image/sguu4i3ts18d87l9m1rj.png?utm_medium=live-embed&utm_source=custom
+
+## Comments by Ming
+* No wireframes of the actual user interface / important screens provided.
+* The general idea has been done before...
+* ...but I really like the barcode scanning as that hasn't been done before.  That will make your project stand out.
+* Talk to folks in team 5
