@@ -1,0 +1,23 @@
+{
+  "name": "pantry",
+  "version": "1.0.0",
+  "description": "Project Name: Pantry Problem Statement: people don’t know how to efficiently use the food in their fridge.",
+  "main": "scanner.js",
+  "dependencies": {
+    "quagga": "^0.12.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuftsdev/comp20-s2018-team16.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tuftsdev/comp20-s2018-team16/issues"
+  },
+  "homepage": "https://github.com/tuftsdev/comp20-s2018-team16#readme"
+}

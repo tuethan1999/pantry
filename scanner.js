@@ -1,3 +1,5 @@
+const Quagga = require('quagga').default;
+
 Quagga.init({
     inputStream : {
       name : "Live",
