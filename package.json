@@ -4,7 +4,8 @@
   "description": "Project Name: Pantry Problem Statement: people don’t know how to efficiently use the food in their fridge.",
   "main": "scanner.js",
   "dependencies": {
-    "quagga": "^0.12.1"
+    "quagga": "^0.12.1",
+    "request": "^2.85.0"
   },
   "devDependencies": {},
   "scripts": {
