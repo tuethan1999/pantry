@@ -12,8 +12,19 @@
             <h1 id="title">Pantry</h1>
             <div id="scanner-container"></div>
             <p><button id="btn">Start/Stop the scanner</button></p>
-            <p><label for="file">Choose file to upload</label>
-            <input type="file" id="file" name="file"></p>
+
+            <form method="post">
+                <label for="file">Choose file to upload (PNG, JPG)</label>
+                <p><input type="file" id="file" name="file" 
+                       accept=".jpg, .jpeg, .png"></input>
+                <div id="submit">
+                    <button>Submit</button>
+                </div></p>
+
+                <div class="preview">
+                    <p>No files currently selected for upload</p>
+                </div>
+            </form>
 
             <script src="node_modules/quagga/dist/quagga.min.js"></script>
             <script src="scanner.js"></script>
