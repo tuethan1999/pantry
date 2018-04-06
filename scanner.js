@@ -1,10 +1,9 @@
-
 var _scannerIsRunning = false;
 
+// Used to read in file and show preview of file before submitting
 var input = document.querySelector('input');
 var preview = document.querySelector('.preview');
 input.style.opacity = 0;
-
 input.addEventListener('change', updateImageDisplay);
 
 // Start/stop scanner
