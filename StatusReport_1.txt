@@ -1,0 +1,10 @@
+TEAM 16: STATUS REPORT 1
+
+1.Option to upload a file from a device for static barcode scanning as well 
+  as the option to preview this file before submission.
+  File created sending ingredients list to spoonacular API and returning recipe list.
+  Began working on MongoDB.
+2.Laptop crashed with weird question mark folder appearing.
+  Spoonacular file will be pushed when laptop is returned.
+3.Continue to work on MongoDB and begin work on decoder.
+  We are also hoping that Patti Klos from Tufts Dining will reply to our email requesting TUFTS API. If for some reason we do not receive this, we can use UPCdatabase API instead.
