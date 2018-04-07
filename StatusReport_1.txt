@@ -1,10 +1,35 @@
 TEAM 16: STATUS REPORT 1
 
-1.Option to upload a file from a device for static barcode scanning as well 
-  as the option to preview this file before submission.
-  File created sending ingredients list to spoonacular API and returning recipe list.
-  Began working on MongoDB.
-2.Laptop crashed with weird question mark folder appearing.
-  Spoonacular file will be pushed when laptop is returned.
-3.Continue to work on MongoDB and begin work on decoder.
-  We are also hoping that Patti Klos from Tufts Dining will reply to our email requesting TUFTS API. If for some reason we do not receive this, we can use UPCdatabase API instead.
+1. What we accomplished during the week:
+
+        Ability to live scan a barcode using QuaggaJS Barcode Scanner API.
+
+        Option to upload a file from a device for static barcode scanning as
+        well as the option to preview this file before submission.
+
+        File created sending ingredients list to spoonacular API and returning 
+        recipe list.
+
+        Began working on MongoDB.
+
+2. Challenges and issues faced during the week:
+
+        Laptop crashed with weird question mark folder appearing.
+
+        Spoonacular file will be pushed when laptop is returned.
+
+3. Goals for next week:
+
+        Continue to work on MongoDB and begin work on decoder.
+
+        We are also hoping that Patti Klos from Tufts Dining will reply to our 
+        email requesting TUFTS API. Need access to barcodes of items in either
+        Dewick or Hodgdon. If for some reason we do not receive this, we can 
+        use UPCdatabase API for example barcodes instead.
+
+        Work on barcode decoder portion using QuaggaJS API. Be able to receive
+        image of barcode from both a file and from a camera.
+
+        Preference back camera to scan barcode if device has two cameras.
+
+        Ability to upload multiple barcode files at once.
