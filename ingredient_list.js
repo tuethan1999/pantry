@@ -1,40 +1,65 @@
+/*var express = require('express');
+var url = require("url");
+
+var bodyParser = require('body-parser'); // Required if we need to use HTTP post parameters
+var validator = require('validator'); // See documentation at https://github.com/chriso/validator.js
+var app = express();
+// See https://stackoverflow.com/questions/5710358/how-to-get-post-query-in-express-node-js
+app.use(bodyParser.json());
+// See https://stackoverflow.com/questions/25471856/express-throws-error-as-body-parser-deprecated-undefined-extended
+app.use(bodyParser.urlencoded({ extended: true })); // Required if we need to use HTTP post parameters
+
+// Mongo initialization and connect to database
+// process.env.MONGODB_URI is the default environment variable on Heroku for the MongoLab add-on
+// process.env.MONGOLAB_URI is the old environment variable on Heroku for the MongoLab add-on
+// process.env.MONGOHQ_URL is an environment variable on Heroku for the MongoHQ add-on
+// If environment variables not found, fall back to mongodb://localhost/nodemongoexample
+// nodemongoexample is the name of the database
+var mongoUri = process.env.MONGODB_URI || process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/ride_server';
+var MongoClient = require('mongodb').MongoClient, format = require('util').format;
+var db = MongoClient.connect(mongoUri, function(error, databaseConnection) {
+	db = databaseConnection;
+});*/
+
+
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 
 // Connection URL
-const url = 'mongodb://localhost:27017';
+const mongo_url = process.env.MONGODB_URI || process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost:27017';
 
 // Database Name
-const dbName = 'myproject';
+const dbName = 'ingredient_list';
 
 var toInsert = [
-{"Name": "tomatoes", "Quantity": {"number": 3, "unit": "ct"}, "expiration": "2015-02-03"}, 
-{"Name": "beef", "Quantity": {"number": 1, "unit": "lbs"}, "expiration": "2015-02-03"}
+{"name": "tomatoes", "quantity": {"number": 3, "unit": "ct"}, "expiration": "2015-02-03"}, 
+{"name": "beef", "Quantity": {"number": 1, "unit": "lbs"}, "expiration": "2015-02-03"}
 ];
 
 // Use connect method to connect to the server
-MongoClient.connect(url, function(err, client) {
+MongoClient.connect(mongo_url, function(err, client) {
   assert.equal(null, err);
   console.log("Connected successfully to server");
 
   const db = client.db(dbName);
-  insertDocuments(db, toInsert, function() {
-    client.close();
+  toInsert.forEach(function(ingredient) {
+	  insertDocuments(db, ingredient, function(result) {
+	    client.close();
+	  });
   });
+  
 });
 
 //Ex: {"ingredients": [{"Name": "tomatoes", "Quantity": {"number": 3, "unit": "ct"}, "expiration": "2015-02-03"}, 
 //{"Name": "beef", "Quantity": {"number": 1, "unit": "lbs"}, "expiration": "2015-02-03"}] }
 
-const insertDocuments = function(db, ingredient_list, callback) {
+const insertDocuments = function(db, ingredient, callback) {
 	// Get the documents collection
 	const collection = db.collection('ingredients');
-	// Insert some documents
-	collection.insertMany(ingredient_list, function(err, result) {
+	var filter = { "name " : ingredient.name, "expiration" : ingredient.expiration };
+	collection.update(filter, ingredient, function(err, result) {
 	assert.equal(err, null);
-	assert.equal(2, result.result.n);
-	assert.equal(2, result.ops.length);
-	console.log("Inserted 2 ingredients into the collection");
+	console.log(ingredient);
 	callback(result);
 	});
 }
