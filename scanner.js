@@ -3,8 +3,11 @@ var _scannerIsRunning = false;
 // Used to read in file and show preview of file before submitting
 var input = document.querySelector('input');
 var preview = document.querySelector('.preview');
+var button = document.getElementById('submit');
+var z = document.getElementById("file").value;
 input.style.opacity = 0;
 input.addEventListener('change', updateImageDisplay);
+button.addEventListener("click", decode_file(z))
 
 // Start/stop scanner
 document.getElementById("btn").addEventListener("click", function() {
@@ -146,18 +149,33 @@ function validFileType(file) {
             return true;
         }
     }
-
     return false;
 }
 
 function returnFileSize(number) {
     if(number < 1024) {
-        return number + 'bytes';
+        return number + ' bytes';
     } 
     else if(number > 1024 && number < 1048576) {
-        return (number/1024).toFixed(1) + 'KB';
+        return (number/1024).toFixed(1) + ' KB';
     } 
     else if(number > 1048576) {
-        return (number/1048576).toFixed(1) + 'MB';
+        return (number/1048576).toFixed(1) + ' MB';
     }
+}
+
+function decode_file(file_path) {
+    Quagga.decodeSingle({
+        decoder: {
+            readers: ["code_128_reader"] // List of active readers
+        },
+        locate: true, // try to locate the barcode in the image
+        src: file_path,
+    }, function(result){
+        if(result.codeResult) {
+            console.log("result", result.codeResult.code);
+        } else {
+            console.log("not detected");
+        }
+    });
 }

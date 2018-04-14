@@ -33,3 +33,29 @@ TEAM 16: STATUS REPORT 1
         Preference back camera to scan barcode if device has two cameras.
 
         Ability to upload multiple barcode files at once.
+
+*******************************************************************************
+
+TEAM 16: STATUS REPORT 2
+
+1. What we accomplished during the week:
+        
+        Decoder for QuaggaJS Barcode Scanner API can now accept images from 
+        both a file and directly from a camera. 
+
+        More than one file can be uploaded
+
+        Decoder can decode barcode from live stream
+
+2. Challenges and issues faced during the week:
+
+        Having trouble getting access to files inputted in for the decoder.
+        Need to delve deeper into the documentation of the file type in HTML
+        and how to save file paths
+
+3. Goals for next week:
+
+        Have the decoder accessible for static images
+
+        Send the decoded database that holds associative food item and 
+        determine food items scanned
