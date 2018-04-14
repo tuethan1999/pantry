@@ -34,6 +34,9 @@ TEAM 16: STATUS REPORT 1
 
         Ability to upload multiple barcode files at once.
 
+ # Comments by Ming
+ * Again, off-the-record, working with Tufts can be painfully slow (to put it in a nice way).  If you do a sample (read: not the entire food database or barcode database, but just a few samples), that would be great.  Don't aim for perfection.
+ 
 *******************************************************************************
 
 TEAM 16: STATUS REPORT 2
