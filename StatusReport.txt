@@ -47,6 +47,11 @@ TEAM 16: STATUS REPORT 2
 
         Decoder can decode barcode from live stream
 
+        Mongo Database now compatible with heroku
+
+        Mongo Database now will updates and inserts items based on name and expiration date.
+
+
 2. Challenges and issues faced during the week:
 
         Having trouble getting access to files inputted in for the decoder.
@@ -59,3 +64,5 @@ TEAM 16: STATUS REPORT 2
 
         Send the decoded database that holds associative food item and 
         determine food items scanned
+
+        make a reduce quantity for mongodb
