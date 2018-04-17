@@ -23,7 +23,7 @@ var db = MongoClient.connect(mongoUri, function(error, databaseConnection) {
 
 
 const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
+const assert = require('assert').strict;
 
 // Connection URL
 const mongo_url = process.env.MONGODB_URI || process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost:27017';
@@ -43,23 +43,35 @@ MongoClient.connect(mongo_url, function(err, client) {
 
   const db = client.db(dbName);
   toInsert.forEach(function(ingredient) {
-	  insertDocuments(db, ingredient, function(result) {
-	    client.close();
+	  insertIngredients(db, ingredient, function(result) {
+	    //client.close();
 	  });
   });
+
+  retrieveIngredients(db, {}, function(result){
+  	console.log(result);
+  })
   
 });
 
 //Ex: {"ingredients": [{"Name": "tomatoes", "Quantity": {"number": 3, "unit": "ct"}, "expiration": "2015-02-03"}, 
 //{"Name": "beef", "Quantity": {"number": 1, "unit": "lbs"}, "expiration": "2015-02-03"}] }
 
-const insertDocuments = function(db, ingredient, callback) {
+const insertIngredients = function(db, ingredient, callback) {
 	// Get the documents collection
 	const collection = db.collection('ingredients');
 	var filter = { "name " : ingredient.name, "expiration" : ingredient.expiration };
 	collection.update(filter, ingredient, function(err, result) {
-	assert.equal(err, null);
-	console.log(ingredient);
-	callback(result);
+		assert.strictEqual(err, null);
+		console.log(ingredient);
+		callback(result);
+	});
+}
+const removeIngredients = function(db, callback)
+{
+	const collection = db.collection('ingredients');
+	collection.remove({"Quantity"."number" : 0}, function(err, result) {
+		assert.strictEqual(err, null);
+		callback(result);
 	});
 }
