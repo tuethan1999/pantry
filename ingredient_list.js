@@ -1,77 +1,126 @@
-/*var express = require('express');
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//												SETUP MONGO/EXPRESS
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+var express = require('express');
 var url = require("url");
 
-var bodyParser = require('body-parser'); // Required if we need to use HTTP post parameters
-var validator = require('validator'); // See documentation at https://github.com/chriso/validator.js
+var bodyParser = require('body-parser');
+var validator = require('validator');
 var app = express();
-// See https://stackoverflow.com/questions/5710358/how-to-get-post-query-in-express-node-js
 app.use(bodyParser.json());
-// See https://stackoverflow.com/questions/25471856/express-throws-error-as-body-parser-deprecated-undefined-extended
-app.use(bodyParser.urlencoded({ extended: true })); // Required if we need to use HTTP post parameters
-
-// Mongo initialization and connect to database
-// process.env.MONGODB_URI is the default environment variable on Heroku for the MongoLab add-on
-// process.env.MONGOLAB_URI is the old environment variable on Heroku for the MongoLab add-on
-// process.env.MONGOHQ_URL is an environment variable on Heroku for the MongoHQ add-on
-// If environment variables not found, fall back to mongodb://localhost/nodemongoexample
-// nodemongoexample is the name of the database
-var mongoUri = process.env.MONGODB_URI || process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/ride_server';
-var MongoClient = require('mongodb').MongoClient, format = require('util').format;
-var db = MongoClient.connect(mongoUri, function(error, databaseConnection) {
-	db = databaseConnection;
-});*/
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert').strict;
+const assert = require('assert');
+
+app.use(express.static(__dirname + '/html'));
+
+//allow cross-origin headers
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 // Connection URL
-const mongo_url = process.env.MONGODB_URI || process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost:27017';
+const mongo_url = process.env.MONGODB_URI || process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost:27017/ingredient_list';
 
-// Database Name
-const dbName = 'ingredient_list';
-
-var toInsert = [
-{"name": "tomatoes", "quantity": {"number": 3, "unit": "ct"}, "expiration": "2015-02-03"}, 
-{"name": "beef", "Quantity": {"number": 1, "unit": "lbs"}, "expiration": "2015-02-03"}
+var updated_ingredient_list = [
+{"name": "tomatoes", "quantity": 323, "unit": "ct", "expiration": "2015-02-03"}, 
+{"name": "beef", "quantity": -5, "unit": "lbs", "expiration": "2015-02-03"}
 ];
 
-// Use connect method to connect to the server
-MongoClient.connect(mongo_url, function(err, client) {
-  assert.equal(null, err);
-  console.log("Connected successfully to server");
+// connect to server
+var db = MongoClient.connect(mongo_url, function(err, client) {
+	assert.equal(null, err);
+	console.log("Connected successfully to server");
+	const db = client;
 
-  const db = client.db(dbName);
-  toInsert.forEach(function(ingredient) {
-	  insertIngredients(db, ingredient, function(result) {
-	    //client.close();
-	  });
-  });
+ 	//anything thats less that or equal to 0 quantity is deleted
+	var remove_criteria = { "quantity": { $lte: 0 }};
+	updated_ingredient_list.forEach(function(ingredient) {
+		insertIngredients(db, ingredient, function(result) {
+			removeIngredients(db, remove_criteria, function(remove_response){
+	  		});
+	  	});
+  	});
 
-  retrieveIngredients(db, {}, function(result){
-  	console.log(result);
-  })
+	// return all the ingrdients after a 1 second delay
+	setTimeout(function() {retrieveIngredients(db, {}, function(all_ingredients){
+		console.log(all_ingredients);
+	});}, 1000);
+	
   
 });
 
-//Ex: {"ingredients": [{"Name": "tomatoes", "Quantity": {"number": 3, "unit": "ct"}, "expiration": "2015-02-03"}, 
-//{"Name": "beef", "Quantity": {"number": 1, "unit": "lbs"}, "expiration": "2015-02-03"}] }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+//												SERVER RESPONSES
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+var error_object = {"error":"Whoops, something is wrong with your data!"};
+
+app.post('/ingredients', function(request, response) {
+	var body = request.body;
+	if(!(body.hasOwnProperty("username") && body.hasOwnProperty("password")
+	 && body.hasOwnProperty("ingredients") && Object.keys(body).length == 3))
+	{
+		response.send(error_object);
+	}
+	else
+	{
+	}
+});
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//												MONGO FUNCTIONS
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const insertIngredients = function(db, ingredient, callback) {
-	// Get the documents collection
-	const collection = db.collection('ingredients');
-	var filter = { "name " : ingredient.name, "expiration" : ingredient.expiration };
-	collection.update(filter, ingredient, function(err, result) {
-		assert.strictEqual(err, null);
-		console.log(ingredient);
-		callback(result);
+	var filter = { "name" : ingredient.name, "expiration" : ingredient.expiration };
+	console.log(filter);
+	db.collection('ingredients', function(err, collection) {
+		collection.update(filter, ingredient, {upsert:true}, function(err, results) {
+			assert.equal(err, null);
+			//console.log(ingredient);
+			callback(results);
+		});
 	});
 }
-const removeIngredients = function(db, callback)
+const retrieveIngredients = function(db, filter, callback)
 {
-	const collection = db.collection('ingredients');
-	collection.remove({"Quantity"."number" : 0}, function(err, result) {
-		assert.strictEqual(err, null);
-		callback(result);
+	db.collection('ingredients', function(error, collection) {
+		collection.find(filter).toArray(function(err, results) {
+			assert.equal(err, null);
+			callback(results);
+		});
 	});
 }
+const removeIngredients = function(db, filter, callback)
+{
+	db.collection('ingredients', function(error, collection) {
+		collection.remove(filter, function(err, results){
+			assert.equal(err, null);
+			callback(results);
+		});
+	});
+}
+
+
