@@ -30,8 +30,8 @@ app.use(function(req, res, next) {
 const mongo_url = process.env.MONGODB_URI || process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost:27017/ingredient_list';
 
 var updated_ingredient_list = [
-{"name": "tomatoes", "quantity": 4, "unit": "ct", "expiration": "2015-02-03"}, 
-{"name": "beef", "quantity": 2, "unit": "lbs", "expiration": "2015-02-03"}
+{"name": "tomatoes", "quantity": 234, "unit": "ct", "expiration": "2015-02-03"}, 
+{"name": "beef", "quantity": 2234234234, "unit": "lbs", "expiration": "2015-02-03"}
 ];
 
 // connect to server
@@ -54,6 +54,8 @@ var error_object = {"error":"Whoops, something is wrong with your data!"};
 // accepts post to /ingredients
 app.post('/ingredients', function(request, response) {
 	var body = request.body;
+	console.log(body);
+	//console.log(body.ingredients);	
 	if(!valid_data(body))
 	{
 		response.send(error_object);
@@ -63,14 +65,15 @@ app.post('/ingredients', function(request, response) {
 		// copy request body
 		var username = request.body.username;
 		var password = request.body.password;
-		var updated_ingredient_list = request.body.ingredients;
+		var updated_ingredients = request.body.ingredients;
+		console.log(updated_ingredients);
+		updated_ingredients = JSON.parse(updated_ingredients);
 
 		// check for funny business
 		username = username.replace(/[^\w\s]/gi, '');
 		password = password.replace(/[^\w\s]/gi, '');
-
 		// check for funny business cont. /make ingredient quanitity a float number
-		updated_ingredient_list.forEach(function(ingredient)
+		updated_ingredients.forEach(function(ingredient)
 		{
 			ingredient.name = ingredient.name.replace(/[^\w\s]/gi, '');
 			ingredient.quantity = ingredient.quantity.replace(/[^\w\s]/gi, '');
@@ -81,14 +84,13 @@ app.post('/ingredients', function(request, response) {
 
 		// haven't decided how to implement multiple user, but this will be neccessary
 		var insert_search_query = { "username": username};
-		console.log(updated_ingredient_list);
 
 		// update ingredients
-		updateIngredients(db, updated_ingredient_list);
+		updateIngredients(db, updated_ingredients);
 		// return all the ingrdients after 5 milliseconds per ingredient
 		setTimeout(function() {retrieveIngredients(db, {}, function(all_ingredients){
 			console.log(all_ingredients);
-		});}, 5*updated_ingredient_list.length);
+		});}, 5*updated_ingredients.length);
 	}
 });
 
@@ -157,23 +159,32 @@ const updateIngredients = function(db, ingredient_list)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const valid_data = function(body)
 {
+	///console.log('3');
 	// check for username, password, ingredients.
 	if(!(body.hasOwnProperty("username") && body.hasOwnProperty("password")
 	&& body.hasOwnProperty("ingredients") && Object.keys(body).length == 3))
 	{
+		//console.log('1');
 		return false;
 	}
 	else
 	{
-		var ingredient_list = request.body.ingredients;
+		//console.log('4');
+		var ingredient_list = updated_ingredient_list;//body.ingredients;
+		//console.log(ingredient_list);
 		// check each ingredient for name, quantity, unit, expiration
 		ingredient_list.forEach(function(ingredient) {
 			if(!(ingredient.hasOwnProperty("name") && ingredient.hasOwnProperty("quantity")
 	 		&& ingredient.hasOwnProperty("unit") && ingredient.hasOwnProperty("expiration") && 
 	 		Object.keys(ingredient).length == 4))
 	 		{
+	 			console.log('2');
 	 			return false;
 			}
 		});
+		//console.log('5');
 	}
+	return true;
 }
+
+app.listen(process.env.PORT || 3000);
