@@ -69,3 +69,20 @@ TEAM 16: STATUS REPORT 2
         determine food items scanned
 
         make a reduce quantity for mongodb
+
+*******************************************************************************
+
+TEAM 16: STATUS REPORT 3
+
+1. What we accomplished during the week:
+
+        updated the update function for mongodb--> possible to reduce quantity
+        made remove function. part of the update function --> auto removes quanities of 0
+
+2. Challenges and issues faced during the week:
+
+        body parser not working when theres an array in an object being passed to post \ingredients
+
+3. Goals for next week:
+
+       finish the \ingredients post and make a get \ingredients. Can i have the same pathname but different posts?
