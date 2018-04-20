@@ -7,7 +7,6 @@ var button = document.getElementById('submit');
 var z = document.getElementById("file").value;
 input.style.opacity = 0;
 input.addEventListener('change', updateImageDisplay);
-button.addEventListener("click", decode_file(z))
 
 // Start/stop scanner
 document.getElementById("btn").addEventListener("click", function() {
@@ -135,8 +134,6 @@ function updateImageDisplay() {
     }
 }
 
-
-
 function validFileType(file) {
     var fileTypes = [
         'image/jpeg',
@@ -164,18 +161,4 @@ function returnFileSize(number) {
     }
 }
 
-function decode_file(file_path) {
-    Quagga.decodeSingle({
-        decoder: {
-            readers: ["code_128_reader"] // List of active readers
-        },
-        locate: true, // try to locate the barcode in the image
-        src: file_path,
-    }, function(result){
-        if(result.codeResult) {
-            console.log("result", result.codeResult.code);
-        } else {
-            console.log("not detected");
-        }
-    });
-}
+
