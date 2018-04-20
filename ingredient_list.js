@@ -19,7 +19,7 @@ const assert = require('assert');
 
 app.use(express.static(__dirname + '/html'));
 
-//allow cross-origin headers
+// allow cross-origin headers
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -30,8 +30,8 @@ app.use(function(req, res, next) {
 const mongo_url = process.env.MONGODB_URI || process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost:27017/ingredient_list';
 
 var updated_ingredient_list = [
-{"name": "tomatoes", "quantity": 323, "unit": "ct", "expiration": "2015-02-03"}, 
-{"name": "beef", "quantity": -5, "unit": "lbs", "expiration": "2015-02-03"}
+{"name": "tomatoes", "quantity": 4, "unit": "ct", "expiration": "2015-02-03"}, 
+{"name": "beef", "quantity": 2, "unit": "lbs", "expiration": "2015-02-03"}
 ];
 
 // connect to server
@@ -39,20 +39,6 @@ var db = MongoClient.connect(mongo_url, function(err, client) {
 	assert.equal(null, err);
 	console.log("Connected successfully to server");
 	const db = client;
-
- 	//anything thats less that or equal to 0 quantity is deleted
-	var remove_criteria = { "quantity": { $lte: 0 }};
-	updated_ingredient_list.forEach(function(ingredient) {
-		insertIngredients(db, ingredient, function(result) {
-			removeIngredients(db, remove_criteria, function(remove_response){
-	  		});
-	  	});
-  	});
-
-	// return all the ingrdients after a 1 second delay
-	setTimeout(function() {retrieveIngredients(db, {}, function(all_ingredients){
-		console.log(all_ingredients);
-	});}, 1000);
 	
   
 });
@@ -65,15 +51,44 @@ var db = MongoClient.connect(mongo_url, function(err, client) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var error_object = {"error":"Whoops, something is wrong with your data!"};
 
+// accepts post to /ingredients
 app.post('/ingredients', function(request, response) {
 	var body = request.body;
-	if(!(body.hasOwnProperty("username") && body.hasOwnProperty("password")
-	 && body.hasOwnProperty("ingredients") && Object.keys(body).length == 3))
+	if(!valid_data(body))
 	{
 		response.send(error_object);
 	}
 	else
 	{
+		// copy request body
+		var username = request.body.username;
+		var password = request.body.password;
+		var updated_ingredient_list = request.body.ingredients;
+
+		// check for funny business
+		username = username.replace(/[^\w\s]/gi, '');
+		password = password.replace(/[^\w\s]/gi, '');
+
+		// check for funny business cont. /make ingredient quanitity a float number
+		updated_ingredient_list.forEach(function(ingredient)
+		{
+			ingredient.name = ingredient.name.replace(/[^\w\s]/gi, '');
+			ingredient.quantity = ingredient.quantity.replace(/[^\w\s]/gi, '');
+			ingredient.quantity = parseFloat(ingredient.quantity);
+			ingredient.unit = ingredient.unit.replace(/[^\w\s]/gi, '');
+			ingredient.expiration = ingredient.expiration.replace(/[^\w\s]/gi, '');
+		});
+
+		// haven't decided how to implement multiple user, but this will be neccessary
+		var insert_search_query = { "username": username};
+		console.log(updated_ingredient_list);
+
+		// update ingredients
+		updateIngredients(db, updated_ingredient_list);
+		// return all the ingrdients after 5 milliseconds per ingredient
+		setTimeout(function() {retrieveIngredients(db, {}, function(all_ingredients){
+			console.log(all_ingredients);
+		});}, 5*updated_ingredient_list.length);
 	}
 });
 
@@ -123,4 +138,42 @@ const removeIngredients = function(db, filter, callback)
 	});
 }
 
+const updateIngredients = function(db, ingredient_list)
+{
+ 	// anything thats less than or equal to 0 quantity is deleted
+	var remove_criteria = { "quantity": { $lte: 0 }};
+	ingredient_list.forEach(function(ingredient) {
+		insertIngredients(db, ingredient, function(result) {
+			removeIngredients(db, remove_criteria, function(remove_response){
+	  		});
+	  	});
+  	});
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+//												HELPER FUNCTIONS
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const valid_data = function(body)
+{
+	// check for username, password, ingredients.
+	if(!(body.hasOwnProperty("username") && body.hasOwnProperty("password")
+	&& body.hasOwnProperty("ingredients") && Object.keys(body).length == 3))
+	{
+		return false;
+	}
+	else
+	{
+		var ingredient_list = request.body.ingredients;
+		// check each ingredient for name, quantity, unit, expiration
+		ingredient_list.forEach(function(ingredient) {
+			if(!(ingredient.hasOwnProperty("name") && ingredient.hasOwnProperty("quantity")
+	 		&& ingredient.hasOwnProperty("unit") && ingredient.hasOwnProperty("expiration") && 
+	 		Object.keys(ingredient).length == 4))
+	 		{
+	 			return false;
+			}
+		});
+	}
+}

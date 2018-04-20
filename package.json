@@ -4,9 +4,11 @@
   "description": "Project Name: Pantry Problem Statement: people don’t know how to efficiently use the food in their fridge.",
   "main": "scanner.js",
   "dependencies": {
+    "express": "^4.16.3",
     "mongodb": "^2.2.35",
     "quagga": "^0.12.1",
-    "request": "^2.85.0"
+    "request": "^2.85.0",
+    "validator": "^9.4.1"
   },
   "devDependencies": {},
   "scripts": {
