@@ -28,11 +28,9 @@ TEAM 16: STATUS REPORT 1
         use UPCdatabase API for example barcodes instead.
 
         Work on barcode decoder portion using QuaggaJS API. Be able to receive
-        image of barcode from both a file and from a camera.
+        image of barcode from a camera.
 
         Preference back camera to scan barcode if device has two cameras.
-
-        Ability to upload multiple barcode files at once.
 
  # Comments by Ming
  * Again, off-the-record, working with Tufts can be painfully slow (to put it in a nice way).  If you do a sample (read: not the entire food database or barcode database, but just a few samples), that would be great.  Don't aim for perfection.
@@ -45,10 +43,6 @@ TEAM 16: STATUS REPORT 2
         
         Decoder for QuaggaJS Barcode Scanner API can now accept images from 
         both a file and directly from a camera. 
-
-        More than one file can be uploaded
-
-        Decoder can decode barcode from live stream
 
         Mongo Database now compatible with heroku
 
@@ -63,8 +57,6 @@ TEAM 16: STATUS REPORT 2
 
 3. Goals for next week:
 
-        Have the decoder accessible for static images
-
         Send the decoded database that holds associative food item and 
         determine food items scanned
 
@@ -76,13 +68,28 @@ TEAM 16: STATUS REPORT 3
 
 1. What we accomplished during the week:
 
-        updated the update function for mongodb--> possible to reduce quantity
-        made remove function. part of the update function --> auto removes quanities of 0
+        Updated the update function for mongodb--> possible to reduce quantity
+        made remove function. Part of the update function --> auto removes quanities of 0
+
+        Decoder can decode barcode from live stream and output to HTML
 
 2. Challenges and issues faced during the week:
 
-        body parser not working when theres an array in an object being passed to post \ingredients
+        Body parser not working when there's an array in an object being passed to post \ingredients
+
+        Barcode scanner not working on static images. Even the example on API
+        website does not seem to work, whch probably means the API needs an 
+        update to fix bugs. Author of API contacted. If we don't hear back
+        in the next couple days, we will remove option to decode from static
+        input file.
 
 3. Goals for next week:
 
-       finish the \ingredients post and make a get \ingredients. Can i have the same pathname but different posts?
+       Finish the \ingredients post and make a get \ingredients. Can i have the same pathname but different posts?
+
+       Convert decoded barcodes to ingredients via comparing to ingredients 
+       database in MongoDB.
+
+       Incorporate foodnacular API to list of ingredients
+
+       Work on CSS and Bootstrap for layout of pages
