@@ -93,3 +93,6 @@ TEAM 16: STATUS REPORT 3
        Incorporate foodnacular API to list of ingredients
 
        Work on CSS and Bootstrap for layout of pages
+ 
+# Comments by Ming
+* "Finish the \ingredients post and make a get \ingredients. Can i have the same pathname but different posts?" => absolutely! Same route name but different HTTP verb => Good. 
