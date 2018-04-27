@@ -82,7 +82,7 @@ app.post('/ingredients', function(request, response) {
 			ingredient.expiration = ingredient.expiration.replace(/[^\w\s]/gi, '');
 		});
 
-		// haven't decided how to implement multiple user, but this will be neccessary
+		// haven't decided how to implement multiple users, but this will be neccessary
 		var insert_search_query = { "username": username};
 
 		// update ingredients
@@ -94,14 +94,23 @@ app.post('/ingredients', function(request, response) {
 	}
 });
 
-
-
-
-
-
-
-
-
+var database = require('./database');
+app.post('/barcode', function(request, response) {
+	var body = request.body;
+	if(!(body.hasOwnProperty("username") && Object.keys(body).length == 1))
+	{
+		response.send(error_object);
+	}
+	else
+	{
+		var barcode = request.body.barcode;
+		barcode = barcode.replace(/[^\w\s]/gi, '');
+		database.get_info(barcode, function(data){
+			console.log(data);
+		});
+		response.send('success');
+	}	
+}
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
