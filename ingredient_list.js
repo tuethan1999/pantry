@@ -38,7 +38,7 @@ var updated_ingredient_list = [
 var db = MongoClient.connect(mongo_url, function(err, client) {
 	assert.equal(null, err);
 	console.log("Connected successfully to server");
-	const db = client;
+	db = client;
 	
   
 });
@@ -54,7 +54,7 @@ var error_object = {"error":"Whoops, something is wrong with your data!"};
 // accepts post to /ingredients
 app.post('/ingredients', function(request, response) {
 	var body = request.body;
-	console.log(body);
+	//console.log(body);
 	//console.log(body.ingredients);	
 	if(!valid_data(body))
 	{
@@ -66,8 +66,6 @@ app.post('/ingredients', function(request, response) {
 		var username = request.body.username;
 		var password = request.body.password;
 		var updated_ingredients = request.body.ingredients;
-		console.log(updated_ingredients);
-		updated_ingredients = JSON.parse(updated_ingredients);
 
 		// check for funny business
 		username = username.replace(/[^\w\s]/gi, '');
@@ -76,10 +74,10 @@ app.post('/ingredients', function(request, response) {
 		updated_ingredients.forEach(function(ingredient)
 		{
 			ingredient.name = ingredient.name.replace(/[^\w\s]/gi, '');
-			ingredient.quantity = ingredient.quantity.replace(/[^\w\s]/gi, '');
+			//ingredient.quantity = ingredient.quantity.replace(/[^\w\s]/gi, '');
 			ingredient.quantity = parseFloat(ingredient.quantity);
 			ingredient.unit = ingredient.unit.replace(/[^\w\s]/gi, '');
-			ingredient.expiration = ingredient.expiration.replace(/[^\w\s]/gi, '');
+			//ingredient.expiration = ingredient.expiration.replace(/[^\w\s]/gi, '');
 		});
 
 		// haven't decided how to implement multiple users, but this will be neccessary
@@ -89,7 +87,7 @@ app.post('/ingredients', function(request, response) {
 		updateIngredients(db, updated_ingredients);
 		// return all the ingrdients after 5 milliseconds per ingredient
 		setTimeout(function() {retrieveIngredients(db, {}, function(all_ingredients){
-			console.log(all_ingredients);
+			response.send(all_ingredients);
 		});}, 5*updated_ingredients.length);
 	}
 });
@@ -106,11 +104,10 @@ app.post('/barcode', function(request, response) {
 		var barcode = request.body.barcode;
 		barcode = barcode.replace(/[^\w\s]/gi, '');
 		database.get_info(barcode, function(data){
-			console.log(data);
+			response.send(data);
 		});
-		response.send('success');
 	}	
-}
+});
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -179,8 +176,8 @@ const valid_data = function(body)
 	else
 	{
 		//console.log('4');
-		var ingredient_list = updated_ingredient_list;//body.ingredients;
-		//console.log(ingredient_list);
+		var ingredient_list = body.ingredients;
+		console.log(typeof ingredient_list);
 		// check each ingredient for name, quantity, unit, expiration
 		ingredient_list.forEach(function(ingredient) {
 			if(!(ingredient.hasOwnProperty("name") && ingredient.hasOwnProperty("quantity")
