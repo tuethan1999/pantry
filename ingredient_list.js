@@ -54,8 +54,6 @@ var error_object = {"error":"Whoops, something is wrong with your data!"};
 // accepts post to /ingredients
 app.post('/ingredients', function(request, response) {
 	var body = request.body;
-	//console.log(body);
-	//console.log(body.ingredients);	
 	if(!valid_data(body))
 	{
 		response.send(error_object);
@@ -118,7 +116,6 @@ app.post('/barcode', function(request, response) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const insertIngredients = function(db, ingredient, callback) {
 	var filter = { "name" : ingredient.name, "expiration" : ingredient.expiration };
-	console.log(filter);
 	db.collection('ingredients', function(err, collection) {
 		collection.update(filter, ingredient, {upsert:true}, function(err, results) {
 			assert.equal(err, null);
@@ -165,30 +162,24 @@ const updateIngredients = function(db, ingredient_list)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const valid_data = function(body)
 {
-	///console.log('3');
 	// check for username, password, ingredients.
 	if(!(body.hasOwnProperty("username") && body.hasOwnProperty("password")
 	&& body.hasOwnProperty("ingredients") && Object.keys(body).length == 3))
 	{
-		//console.log('1');
 		return false;
 	}
 	else
 	{
-		//console.log('4');
 		var ingredient_list = body.ingredients;
-		console.log(typeof ingredient_list);
 		// check each ingredient for name, quantity, unit, expiration
 		ingredient_list.forEach(function(ingredient) {
 			if(!(ingredient.hasOwnProperty("name") && ingredient.hasOwnProperty("quantity")
 	 		&& ingredient.hasOwnProperty("unit") && ingredient.hasOwnProperty("expiration") && 
 	 		Object.keys(ingredient).length == 4))
 	 		{
-	 			console.log('2');
 	 			return false;
 			}
 		});
-		//console.log('5');
 	}
 	return true;
 }
