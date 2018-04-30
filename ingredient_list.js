@@ -93,7 +93,7 @@ app.post('/ingredients', function(request, response) {
 var database = require('./database');
 app.post('/barcode', function(request, response) {
 	var body = request.body;
-	if(!(body.hasOwnProperty("username") && Object.keys(body).length == 1))
+	if(!(body.hasOwnProperty("barcode") && Object.keys(body).length == 1))
 	{
 		response.send(error_object);
 	}
