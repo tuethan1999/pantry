@@ -114,6 +114,20 @@ function startScanner() {
         var elem = document.getElementById("button");
         elem.parentNode.removeChild(elem);
         document.getElementById("scanner-container").innerHTML = "";
-        document.getElementById("processed").innerHTML = "Barcode detected and processed : [" + result.codeResult.code + "]";
+        console.log("Barcode detected and processed : [" + result.codeResult.code + "]");
+        request = new XMLHttpRequest();
+
+        // Step 2: Initialize HTTP POST request
+        request.open("POST", "https://glacial-castle-75338.herokuapp.com/barcode", true);
+
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        // Once request is fully loaded, parse through JSON string 
+        request.onreadystatechange = function() {
+            if (request.readyState == 4 && request.status == 200) {
+                result = request.responseText;
+                $("#ingredients_list").prepend(entry);
+            }
+        }
+        request.send("username=" + result.codeResult.code);
     });
 }
