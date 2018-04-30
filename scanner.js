@@ -111,23 +111,30 @@ function startScanner() {
     Quagga.onDetected(function (result) {
         Quagga.stop();
         _scannerIsRunning = false;
-        var elem = document.getElementById("button");
-        elem.parentNode.removeChild(elem);
+        if (document.getElementById("button") != null) {
+            var elem = document.getElementById("button");
+            elem.parentNode.removeChild(elem);
+        }
         document.getElementById("scanner-container").innerHTML = "";
         console.log("Barcode detected and processed : [" + result.codeResult.code + "]");
+
+        var request;
         request = new XMLHttpRequest();
 
         // Step 2: Initialize HTTP POST request
         request.open("POST", "https://glacial-castle-75338.herokuapp.com/barcode", true);
 
         request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
         // Once request is fully loaded, parse through JSON string 
         request.onreadystatechange = function() {
             if (request.readyState == 4 && request.status == 200) {
                 result = request.responseText;
-                $("#ingredients_list").prepend(entry);
+                console.log("Result = " + result);
+                var div = document.getElementById("ingredients_list");
+                div.innerHTML += result;
             }
         }
-        request.send("username=" + result.codeResult.code);
+        request.send("barcode=" + result.codeResult.code);
     });
 }
