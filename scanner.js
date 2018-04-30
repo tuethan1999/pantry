@@ -130,9 +130,23 @@ function startScanner() {
         request.onreadystatechange = function() {
             if (request.readyState == 4 && request.status == 200) {
                 result = request.responseText;
-                console.log("Result = " + result);
-                var div = document.getElementById("ingredients_list");
-                div.innerHTML += result;
+                var element = document.getElementById("ingredients_list");
+                var numOfChildren = element.getElementsByTagName('*').length;
+                if (numOfChildren == 0) {
+                    $("#ingredients_list").append("<h3>List of Ingredients added</h3>");
+                }
+
+                $("#ingredients_list").append("<p>"+result+"</p>");
+
+                if (numOfChildren == 0) {
+                    var button2 = document.createElement("button");
+                    button2.type = "button";
+                    button2.id = "btn2";
+                    button2.className = "btn btn-warning btn-lg";
+                    button2.innerHTML = "Submit";
+                    var body1 = document.getElementsByTagName("body")[0];
+                    body1.appendChild(button2);
+                }
             }
         }
         request.send("barcode=" + result.codeResult.code);
