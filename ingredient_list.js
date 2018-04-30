@@ -100,7 +100,7 @@ app.post('/barcode', function(request, response) {
 	else
 	{
 		var barcode = request.body.barcode;
-		barcode = barcode.replace(/[^\w\s]/gi, '');
+		barcode = parseInt(barcode);
 		database.get_info(barcode, function(data){
 			response.send(data.description);
 		});
