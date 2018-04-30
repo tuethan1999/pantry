@@ -1,63 +1,41 @@
-h1 {
-    text-align: center;
-    font-size: 75px;
-    font: Lucida Grande;
-    color: #C1272D;
+html, body, header, .view {
+    height: 100%;
 }
 
 body {
-        background-color: #FAEBD7;
-        text-align: center;
+    background-image: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img(11).jpg");
+
+    text-align: center;
+    padding: 20px;
+
+    height: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    animation-name:img-ani;
+    animation-duration: 1s;   
+    animation-timing-function: ease-in;
 }
 
-
-form {
-        width: 600px;
-        background: #ccc;
-        margin: 0 auto;
-        padding: 20px;
-        border: 1px solid black;
+@keyframes img-ani {
+  from{opacity:0;}
+  to{opacity: 1;}
 }
 
-form ol {
-        padding-left: 0;
+.jumbotron {
+    text-align: center;
+    font-size: 75px;
+    font: Lucida Grande;
+    color: #3399FF;
+    opacity: 0.9;
+    background-color: #DBE2EC;
 }
 
-form li, div > p {
-        background: #eee;
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-        list-style-type: none;
-        border: 1px solid black;
-}
-
-form img {
-        height: 64px;
-        order: 1;
-}
-
-form p {
-        line-height: 32px;
-        padding-left: 10px;
-}
-
-form label, form button {
-        background-color: #7F9CCB;
-        padding: 5px 10px;
-        border-radius: 5px;
-        border: 1px ridge black;
-        font-size: 0.8rem;
-        height: auto;
-        text-align: center;
-}
-
-form label:hover, form button:hover {
-        background-color: #2D5BA3;
-        color: white;
-}
-
-form label:active, form button:active {
-        background-color: #0D3F8F;
-        color: white;
+#processed {
+    text-align: center;
+    font-size: 35px;
+    font: Lucida Grande;
+    color: #C1272D;
+    font-weight: bold;
 }

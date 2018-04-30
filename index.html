@@ -1,36 +1,26 @@
 <!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Pantry</title>
+        <!-- Latest compiled and minified Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="style.css" type="text/css"/>
+    </head>
 
-    <html>
-
-        <head>
-            <meta charset="utf-8" />
-            <title>Pantry</title>
-            <link rel="stylesheet" href="style.css" type="text/css" />
-        </head>
-
-        <body>
-            <h1 id="title">Pantry</h1>
-            <div id="scanner-container"></div>
-            <p><button id="btn">Start/Stop the scanner</button></p>
-
-            <form method="post">
-                <label for="file">Choose file to upload (PNG, JPG)</label>
-                <p><input type="file" id="file" name="file" 
-                       accept=".jpg, .jpeg, .png"></input>
-                <div id="submit">
-                    <button>Submit</button>
-                </div></p>
-
-                <div class="preview">
-                    <p>No files currently selected for upload</p>
-                </div>
-            </form>
-
-            <script src="node_modules/quagga/dist/quagga.min.js"></script>
-            <script src="node_modules/quagga/dist/quagga.js"></script>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-            <script src="scanner.js"></script>
-            <script src="file_input.js"></script>
-
-        </body>
-    </html>
+    <body>
+        <div class="jumbotron">
+            <h1 class="display-3">Welcome to Pantry</h1>
+        </div>
+        <div id="scanner-container"></div>
+        <div id="processed"></div>
+        <button type="button" id="btn" class="btn btn-success btn-lg">Start the scanner</button>
+        <!-- Needed for scanner library and to use jQuery -->
+        <script src="node_modules/quagga/dist/quagga.min.js"></script>
+        <script src="node_modules/quagga/dist/quagga.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!-- Handles all of scanner  -->
+        <script src="scanner.js"></script>
+    </body>
+</html>
