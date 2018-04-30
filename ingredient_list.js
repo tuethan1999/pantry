@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var express = require('express');
 var url = require("url");
+var unirest = require('unirest');
 
 var bodyParser = require('body-parser');
 var validator = require('validator');
@@ -90,6 +91,40 @@ app.post('/ingredients', function(request, response) {
 	}
 });
 
+app.get('/recipes', function(request,response){
+	retrieveIngredients(db, {}, function(ingred){
+		var ingred = request.body.inged;
+		console.log(ingred);
+			unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?fillIngredients=false&ingredients="+ingred+"&limitLicense=false&number=1&ranking=1")
+			.header("X-Mashape-Key", "j2fHvkZ8mCmshWk9ssoVRX7VfpiXp1sAi9CjsnSZJkZIqdWNlT")
+			.header("Accept", "application/json")
+			.end(function (result) {
+		var testID = result.body[0].id;
+		console.log(testID); // we have recipe ID
+			unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"+testID+"/information?includeNutrition=true")
+			.header("X-Mashape-Key", "j2fHvkZ8mCmshWk9ssoVRX7VfpiXp1sAi9CjsnSZJkZIqdWNlT")
+			.header("Accept", "application/json")
+			.end(function (result2) {
+		console.log(result2.body); // we have recipe info
+		var allData = result2.body;
+			response.send(allData);
+		// var htmldat = "<!DOCTYPE html><html><head><title> Recipe </title><meta charset = \"utf-8\" /><link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" /></head><body>";
+		//   	htmldat += "<p>The Recipe is: "+allData.title+"</p>";
+		//   	htmldat += "<p> The Recipe will cost you $"+allData.pricePerServing+"</p>";
+		//   	htmldat += "<p> You will need "+allData.readyInMinutes+" minutes to prepare</p>";
+		//   	htmldat += "<p> The recipe will feed "+allData.servings+" guests</p>";
+		//   	htmldat += "<p> Here's how you prepare it: "+allData.instructions+"</p>";
+		//   	htmldat += "<p> The nutritional information is as follows: </p>";
+		//   	htmldat += "<p> Percentage Protein: " + allData.nutrition.caloricBreakdown.percentProtein + "% </p>";
+		//   	htmldat += "<p> Percentage Fat: " + allData.nutrition.caloricBreakdown.percentFat + "% </p>";
+		//   	htmldat += "<p> Percentage Carbohydrates: " + allData.nutrition.caloricBreakdown.percentCarbs + "% </p>";
+		//   	var htmlEnd = "</body></html>";
+		//   	response.send(htmldat+htmlEnd);
+			});
+		});
+	});
+});
+
 var database = require('./database');
 app.post('/barcode', function(request, response) {
 	var body = request.body;
@@ -100,6 +135,7 @@ app.post('/barcode', function(request, response) {
 	else
 	{
 		var barcode = request.body.barcode;
+		barcode = parseInt(barcode);
 		database.get_info(barcode, function(data){
 			response.send(data.description);
 		});
