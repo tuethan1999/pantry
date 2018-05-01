@@ -80,7 +80,7 @@ app.post('/ingredients', function(request, response) {
 		});
 
 		// haven't decided how to implement multiple users, but this will be neccessary
-		var insert_search_query = { "username": username};
+		//var insert_search_query = { "username": username};
 
 		// update ingredients
 		updateIngredients(db, updated_ingredients);
@@ -94,21 +94,22 @@ app.post('/ingredients', function(request, response) {
 
 app.get('/recipes', function(request,response){
 	retrieveIngredients(db, {}, function(ingred){
-		var ingred = request.body.ingred;
-		console.log(ingred);
-			unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?fillIngredients=false&ingredients="+ingred+"&limitLicense=false&number=1&ranking=1")
+		var ingredient = ingred[0].name;
+			unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?fillIngredients=false&ingredients="+ingredient+"&limitLicense=false&number=1&ranking=1")
+
 			.header("X-Mashape-Key", "j2fHvkZ8mCmshWk9ssoVRX7VfpiXp1sAi9CjsnSZJkZIqdWNlT")
 			.header("Accept", "application/json")
 			.end(function (result) {
 		var testID = result.body[0].id;
-		console.log(testID); // we have recipe ID
+		//console.log(testID); // we have recipe ID
 			unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"+testID+"/information?includeNutrition=true")
 			.header("X-Mashape-Key", "j2fHvkZ8mCmshWk9ssoVRX7VfpiXp1sAi9CjsnSZJkZIqdWNlT")
 			.header("Accept", "application/json")
 			.end(function (result2) {
-		console.log(result2.body); // we have recipe info
+		//console.log(result2.body); // we have recipe info
 		var allData = result2.body;
-			response.send(allData);
+			var json = JSON.stringify(allData);
+			response.send(json);
 		// var htmldat = "<!DOCTYPE html><html><head><title> Recipe </title><meta charset = \"utf-8\" /><link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" /></head><body>";
 		  	
 		//   	response.send(htmldat+htmlEnd);
