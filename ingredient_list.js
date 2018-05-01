@@ -94,7 +94,7 @@ app.post('/ingredients', function(request, response) {
 
 app.get('/recipes', function(request,response){
 	retrieveIngredients(db, {}, function(ingred){
-		var ingred = request.body.inged;
+		var ingred = request.body.ingred;
 		console.log(ingred);
 			unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?fillIngredients=false&ingredients="+ingred+"&limitLicense=false&number=1&ranking=1")
 			.header("X-Mashape-Key", "j2fHvkZ8mCmshWk9ssoVRX7VfpiXp1sAi9CjsnSZJkZIqdWNlT")

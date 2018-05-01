@@ -32,8 +32,9 @@ body {
     background-color: #DBE2EC;
 }
 
-#ingredients_list {
+#ingredients_list, #recipes {
     padding-top: 20px;
+    padding-left: 50px;
     text-align: center;
     font: Lucida Grande;
     color: #C1272D;
