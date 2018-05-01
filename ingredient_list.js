@@ -205,6 +205,7 @@ const valid_data = function(body)
 	else
 	{
 		var ingredient_list = body.ingredients;
+		console.log(ingredient_list);
 		// check each ingredient for name, quantity, unit, expiration
 		ingredient_list.forEach(function(ingredient) {
 			if(!(ingredient.hasOwnProperty("name") && ingredient.hasOwnProperty("quantity")
