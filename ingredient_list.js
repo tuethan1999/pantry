@@ -110,16 +110,7 @@ app.get('/recipes', function(request,response){
 		var allData = result2.body;
 			response.send(allData);
 		// var htmldat = "<!DOCTYPE html><html><head><title> Recipe </title><meta charset = \"utf-8\" /><link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" /></head><body>";
-		//   	htmldat += "<p>The Recipe is: "+allData.title+"</p>";
-		//   	htmldat += "<p> The Recipe will cost you $"+allData.pricePerServing+"</p>";
-		//   	htmldat += "<p> You will need "+allData.readyInMinutes+" minutes to prepare</p>";
-		//   	htmldat += "<p> The recipe will feed "+allData.servings+" guests</p>";
-		//   	htmldat += "<p> Here's how you prepare it: "+allData.instructions+"</p>";
-		//   	htmldat += "<p> The nutritional information is as follows: </p>";
-		//   	htmldat += "<p> Percentage Protein: " + allData.nutrition.caloricBreakdown.percentProtein + "% </p>";
-		//   	htmldat += "<p> Percentage Fat: " + allData.nutrition.caloricBreakdown.percentFat + "% </p>";
-		//   	htmldat += "<p> Percentage Carbohydrates: " + allData.nutrition.caloricBreakdown.percentCarbs + "% </p>";
-		//   	var htmlEnd = "</body></html>";
+		  	
 		//   	response.send(htmldat+htmlEnd);
 			});
 		});
