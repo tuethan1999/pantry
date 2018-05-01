@@ -204,6 +204,7 @@ const valid_data = function(body)
 	}
 	else
 	{
+		console.log(body);
 		var ingredient_list = body.ingredients;
 		console.log(ingredient_list);
 		// check each ingredient for name, quantity, unit, expiration
