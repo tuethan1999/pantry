@@ -40,7 +40,7 @@ using database that links barcodes to ingredients
 
 receiving name and expiration of ingredient
 using recipe api
-receiving name of the recipe, price of the recipe, nutritional information
+receiving name of the recipe, instructions of the recipe, nutritional information
 
 Special Techniques:
 barcode scanning
