@@ -62,13 +62,13 @@ app.post('/ingredients', function(request, response) {
 	else
 	{
 		// copy request body
-		var username = request.body.username;
-		var password = request.body.password;
+		//var username = request.body.username;
+		//var password = request.body.password;
 		var updated_ingredients = request.body.ingredients;
 
 		// check for funny business
-		username = username.replace(/[^\w\s]/gi, '');
-		password = password.replace(/[^\w\s]/gi, '');
+		//username = username.replace(/[^\w\s]/gi, '');
+		//password = password.replace(/[^\w\s]/gi, '');
 		// check for funny business cont. /make ingredient quanitity a float number
 		updated_ingredients.forEach(function(ingredient)
 		{
@@ -198,8 +198,7 @@ const updateIngredients = function(db, ingredient_list)
 const valid_data = function(body)
 {
 	// check for username, password, ingredients.
-	if(!(body.hasOwnProperty("username") && body.hasOwnProperty("password")
-	&& body.hasOwnProperty("ingredients") && Object.keys(body).length == 3))
+	if(body.hasOwnProperty("ingredients"))
 	{
 		return false;
 	}
