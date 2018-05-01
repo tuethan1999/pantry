@@ -178,9 +178,33 @@ function startScanner() {
                                 console.log(result2);
                             }
                         }
-                        console.log(keyval);
                         request2.send(JSON.stringify(keyval));
 
+
+                        var request3;
+                        request3 = new XMLHttpRequest();
+
+                        // Initialize HTTP POST request
+                        request3.open("GET", "https://glacial-castle-75338.herokuapp.com/recipes", true);
+
+                        request3.onreadystatechange = function() {
+                            if (request3.readyState == 4 && request3.status == 200) {
+                                result30 = request3.responseText;
+                                result3 = JSON.parse(result30);
+                                htmldat = "";
+                                htmldat += "<p>The Recipe is: "+result3.title+"</p>";
+                                htmldat += "<p> You will need "+result3.readyInMinutes+" minutes to prepare</p>";
+                                htmldat += "<p> The recipe will feed "+result3.servings+" guests</p>";
+                                htmldat += "<p> Here's how you prepare it: "+result3.instructions+"</p>";
+                            }
+
+                            $("#recipes").append(htmldat);
+                        }
+
+                        request3.send();
+
+
+                        // $("#recipes").append("<p>The Recipe is: Korean Fried Chicken</p><p>You will need 25 minutes to prepare</p><p>The recipe will feed 4 guests</p><p>Here's how you prepare it: Heat vegetable oil in a Dutch oven or large pot over medium high heat to 300 degrees F. Season chicken wings with salt and pepper, to taste. Working in batches, add the chicken wings to the Dutch oven, 5 or 6 at a time, and fry until light brown, about 2-3 minutes. Transfer to a paper towel-lined plate. Increase oil temperature to 350 degrees F. Add the chicken wings to the Dutch oven again and cook until golden brown and crispy, about 2 minutes on each side. Transfer to a paper towel-lined plate. Heat soy sauce and sugar in a small saucepan over medium high heat. Bring to a boil; reduce heat to low and simmer, stirring occasionally, until sauce has thickened, about 2-3 minutes. Serve wings immediately, tossed with soy sauce glaze.</p><p>The nutritional information is as follows:</p><p>Percentage Protein: 23.56%</p><p>Percentage Fat: 63.39%</p><p>Percentage Carbohydrates: 13.05%</p>");
 
                     });
                 }
