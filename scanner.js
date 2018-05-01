@@ -134,7 +134,7 @@ function startScanner() {
                 if (element.getElementsByTagName('*').length == 0) {
                     $("#ingredients_list").append("<h3>List of Ingredients added</h3>");
                 }
-                console.log("Result = " + result);
+                // console.log("Result = " + result);
                 $("#ingredients_list").append("<p>"+result+"</p>");
 
                 if (element.getElementsByTagName('*').length == 2) {
@@ -148,30 +148,30 @@ function startScanner() {
 
                     button2.addEventListener ("click", function() {
                         var myNo = document.getElementById("ingredients_list");
-                        // var keyval = {};
-                        // keyval['ingredients'] = [];
+                        var keyval = {};
+                        keyval['ingredients'] = [];
                         while (myNo.firstChild) {
-                            // keyval['ingredients'].push(myNo.firstChild);
+                            keyval['ingredients'].push(myNo.firstChild);
                             myNo.removeChild(myNo.firstChild);
                         }
                         var elem2 = document.getElementById("btn2");
                         elem2.parentNode.removeChild(elem2);
 
-                        // var request2;
-                        // request2 = new XMLHttpRequest();
+                        var request2;
+                        request2 = new XMLHttpRequest();
 
-                        // // Initialize HTTP POST request
-                        // request2.open("POST", "https://glacial-castle-75338.herokuapp.com/barcode", true);
+                        // Initialize HTTP POST request
+                        request2.open("POST", "https://glacial-castle-75338.herokuapp.com/ingredients", true);
 
-                        // request2.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                        request2.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-                        // request2.onreadystatechange = function() {
-                        //     if (request2.readyState == 4 && request2.status == 200) {
-                        //         result2 = request2.responseText;
-                        //         console.log(result2);
-                        //     }
-                        // }
-                        // request.send(keyval);
+                        request2.onreadystatechange = function() {
+                            if (request2.readyState == 4 && request2.status == 200) {
+                                result2 = request2.responseText;
+                                console.log(result2);
+                            }
+                        }
+                        request.send(keyval);
                     });
                 }
             }
