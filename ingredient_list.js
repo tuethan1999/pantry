@@ -198,9 +198,8 @@ const updateIngredients = function(db, ingredient_list)
 const valid_data = function(body)
 {
 	// check for username, password, ingredients.
-	if(body.hasOwnProperty("ingredients"))
+	if(!body.hasOwnProperty("ingredients"))
 	{
-		console.log(body);
 		return false;
 	}
 	else
