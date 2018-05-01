@@ -200,6 +200,7 @@ const valid_data = function(body)
 	// check for username, password, ingredients.
 	if(!body.hasOwnProperty("ingredients"))
 	{
+		console.log(body);
 		return false;
 	}
 	else
