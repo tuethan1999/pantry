@@ -1,4 +1,4 @@
 var database = require('./database');
-database.get_info('0022000005120', function(data){
+database.get_info('0835871001203', function(data){
 	console.log(data.description);
 });

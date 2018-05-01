@@ -86,7 +86,8 @@ app.post('/ingredients', function(request, response) {
 		updateIngredients(db, updated_ingredients);
 		// return all the ingrdients after 5 milliseconds per ingredient
 		setTimeout(function() {retrieveIngredients(db, {}, function(all_ingredients){
-			response.send(all_ingredients);
+			var list = JSON.stringify(all_ingredients);
+			response.send(list);
 		});}, 5*updated_ingredients.length);
 	}
 });
